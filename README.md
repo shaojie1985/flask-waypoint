@@ -6,10 +6,13 @@
 ## Contents
 
 1. [About](#about)
-2. [Install](#install)
-3. [Set up for development](#setup-for-development)
-4. [Testing](#testing)
-5. [Coding conventions](#coding-conventions)
+2. [Using it](#using-it)
+    1. [Context manager](#context-manager)
+    2. [Decorator](#decorator)
+    3. [Limitations](#limitations)
+3. [Hacking](#hacking)
+    1. [Testing](#testing)
+    2. [Coding conventions](#coding-conventions)
 
 
 ## About
