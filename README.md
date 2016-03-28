@@ -1,4 +1,4 @@
-# flask-waypoint
+# Flask-Waypoint
 
 [![Build Status](https://travis-ci.com/wizeline/flask-waypoint.svg?branch=master)](https://travis-ci.com/wizeline/flask-waypoint)
 
@@ -16,17 +16,59 @@
 
 Flask-Waypoint is an extension that handles database access for master-slave replicas for Flask applications using SQLAlchemy.
 
+## Using it
 
-## Install
-
-Just do:
+When defining your application:
 
 ```
-$ pip install git+ssh://git@github.com/wizeline/flask-waypoint.git
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_waypoint import FlaskWaypoint
+
+app = Flask(__name__)
+db = SQLAlchemy(app)
+waypoint = FlaskWaypoint(app, db)
+```
+
+Flask-Waypoint will use the config keys `DB_MASTER_URI` and `DB_SLAVE_URI` to create the engines to connect to master and slave as needed, you can also use your own config keys and set them with the constructor kwargs `master_config_key`, and `slave_config_key`.
+
+When trying to access the database without specifying a binding it will default to `master` unless you initialize Flask-Waypoint with `raise_when_not_binding=True`, in which case it will raise `flask_waypoint.NoBindingActiveError`.
+
+### Context manager
+
+```python
+    from flask_waypoint import db_master, db_slave
+
+    with db_master():
+        pass
+
+    with db_slave():
+        pass 
+```
+
+### Decorator
+
+```python
+    from flask_waypoint import with_slave, with_master
+
+    @app.route('/users')
+    @with_slave
+    def get_users():
+        pass # TODO: Return user list
+
+    @app.route('/users', methods=['POST'])
+    @with_master
+    def create_user():
+        pass # TODO: Create user
 ```
 
 
-## Setup
+### Limitations
+
+Due to the way Flask-SqlAlchemy works it's not possible to change across databases on the same request.
+
+
+## Hacking
 
 First install Python 3 from [Homebrew](http://brew.sh/) and virtualenvwrapper:
 
@@ -55,7 +97,7 @@ $ pip install tox
 ```
 
 
-## Testing
+### Testing
 
 To run the tests, you just do:
 
@@ -64,7 +106,7 @@ $ tox
 ```
 
 
-## Coding conventions
+### Coding conventions
 
 We use `editorconfig` to define our coding style. Please [add editorconfig](http://editorconfig.org/#download)
 to your editor of choice.
