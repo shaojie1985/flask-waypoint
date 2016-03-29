@@ -57,14 +57,14 @@ class TwoBindingsOnSameRequestError(Exception):
 
 @contextmanager
 def db_master():
-    """Contect managet to run a block within the master database."""
+    """Context manager to run a block within the master database."""
     with db_bind('master'):
         yield
 
 
 @contextmanager
 def db_slave():
-    """Contect managet to run a block within the slave database."""
+    """Context manager to run a block within the slave database."""
     with db_bind('slave'):
         yield
 
