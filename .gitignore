@@ -21,3 +21,6 @@ man/
 .tox/
 .coverage
 cover/
+
+master.db
+slave.db
